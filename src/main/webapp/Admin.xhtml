@@ -1,0 +1,174 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+     <f:view contentType="text/html">
+    <style>
+        .tamaño{
+            width: 45%;
+            text-align: center;
+        }
+         .portadaR{
+            background-image: url(https://images5.alphacoders.com/402/402124.jpg);
+            height: 250px;
+            background-attachment: fixed;
+            text-align: center;
+        }
+        
+        .color{
+            color: beige;
+            font-family: serif;
+        }
+            .centrar{
+                text-align: center;
+            } 
+            
+            .boton{
+                size: 318px;
+            }
+         .Titulo{
+                size: 200px;
+                color: #ffffff;
+        }
+        
+    </style>
+            <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <h:form styleClass="portadaR">
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    <h1 class="Titulo">#{msge.usuario}</h1>
+                </h:form>
+            </f:facet>
+        </h:head>
+    <h:body>
+        <h:form styleClass="portadaR"/>
+        <f:view locale="#{inter.language}">
+        <h:form id="form">
+                <div align="right">
+                    <h:commandLink value="ESPAÑOL" action="#{inter.actionSpanish}"></h:commandLink>
+                    <h:outputLabel value=" o "></h:outputLabel>
+                    <h:commandLink value="INGLES" action="#{inter.actionEnglish}"></h:commandLink>
+                </div>
+        <p:panel id="ref">  
+        <h:panelGrid id="panelAgregar" columns="3" class="centrar">
+             
+             
+         #{msge.nombre} <p:inputText id="nombre" value="#{vista1.persona.nombre}" required="true" label="#{msge.nombre}" style="width: 318px"> 
+                        <f:validateLength for="nombre" minimum="3" maximum="10"></f:validateLength>
+                        </p:inputText>
+                        <h:message for="nombre"></h:message>
+               
+         #{msge.apellido}:<p:inputText id="apellido" value="#{vista1.persona.apellido}" required="true" label="#{msge.apellido}" style="width: 318px"> 
+                        <f:validateLength for="apellido" minimum="3" maximum="10"></f:validateLength>
+                        <p:clientValidator />
+                        </p:inputText>
+                        <h:message for="apellido"></h:message>
+         
+         #{msge.edad} : <p:inputText id="edad" value="#{vista1.persona.edad}" label="#{msge.edad}" style="width: 318px" size="2">
+                        <f:convertNumber type="number"/>
+                        </p:inputText>
+                        <h:message for="edad"></h:message>
+                
+         #{msge.correo} <p:inputText id="correo" value="#{vista1.persona.correo}" required="true" label="#{msge.correo}" style="width: 318px">
+                        <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+                        <p:clientValidator />
+                        </p:inputText> 
+                        <h:message for="correo" ></h:message>
+         
+         #{msge.ciudad} <p:inputText id="ciudad" value="#{vista1.persona.foto}" required="true" label="#{msge.ciudad}" style="width: 318px" >
+                        <f:validateLength for="ciudad" minimum="3" maximum="10"></f:validateLength>
+                        <p:clientValidator />
+                        </p:inputText> 
+                        <h:message for="ciudad"></h:message>       
+                       
+         <br></br>
+         <p:commandButton id="agregarPersona" action="#{vista1.agregar(vista1.persona)}" value="#{msge.agregar}" style="width: 327px" update="lista" validateClient="true" ajax="true" ></p:commandButton>
+         <br></br>
+         <br></br>
+        
+      </h:panelGrid>
+             </p:panel>    
+             <p:blockUI block="ref" trigger="agregarPersona">
+                 Insertando...<br/>
+                 <p:graphicImage value="/wait/wait1.gif"></p:graphicImage>
+             </p:blockUI>
+             <p:panel id="listas">
+             <p:growl id="msg" showDetail="true"/>
+             <p:dataTable id="lista" value="#{vista1.datos.persona}" var="dato" editable="true" paginator="true">
+                    <p:ajax id="editar" event="rowEdit" listener="#{vista1.editarPersona}" update=":form:msg"/>
+                    <p:column headerText="#{msge.nombre}">
+                     <p:cellEditor>
+                         <f:facet name="output">
+                            <h:outputText value="#{dato.nombre}"></h:outputText>
+                        </f:facet>
+                        <f:facet name="input">
+                            <h:outputText value="#{dato.nombre}"></h:outputText>
+                        </f:facet>
+                    </p:cellEditor>
+                 </p:column>
+                    <p:column headerText="#{msge.apellido}">
+                     <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{dato.apellido}"></h:outputText>
+                        </f:facet>
+                        <f:facet name="input">
+                            <h:inputText value="#{dato.apellido}"></h:inputText>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+                    <p:column headerText="#{msge.correo}">
+                     <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{dato.correo}"></h:outputText>
+                        </f:facet>
+                        <f:facet name="input">
+                            <h:inputText value="#{dato.correo}"></h:inputText>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+                    <p:column headerText="#{msge.edad}">
+                     <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{dato.edad}"></h:outputText>
+                        </f:facet>
+                        <f:facet name="input">
+                            <h:inputText value="#{dato.edad}"></h:inputText>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+                    <p:column headerText="#{msge.ciudad}">
+                   <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{dato.foto}"></h:outputText>
+                        </f:facet>
+                        <f:facet name="input">
+                            <h:inputText value="#{dato.foto}"></h:inputText>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+                    <p:column id="eliminar">
+                        <h:commandButton styleClass="boton" id="borrarUser" value="#{msge.eliminar}" action="#{vista1.datos.eliminar(dato)}"></h:commandButton>
+                </p:column> 
+                <p:column>
+                    <p:rowEditor></p:rowEditor>
+                </p:column>
+            </p:dataTable>
+              <p:blockUI block="lista" trigger="lista">
+                 Insertando...<br/>
+                 <p:graphicImage value="/wait/wait1.gif"></p:graphicImage>
+             </p:blockUI>
+             </p:panel>
+            </h:form>
+         </f:view>
+        <h:form styleClass="portadaR"/>
+        
+    </h:body>
+        </f:view>
+</html>
+

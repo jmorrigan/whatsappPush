@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+    
+    <f:view contentType="text/html" locale="es">
+        
+        <style>
+            .portadaRe{
+            background-image: url(https://images5.alphacoders.com/402/402124.jpg);
+            height: 350px;
+            background-attachment: fixed;
+            text-align: center;
+        }
+            .Titulo{
+                size: 200px;
+                color: #ffffff;
+        }
+        </style>
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <h:form styleClass="portadaRe">
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    <h1 class="Titulo">#{msge.administrador}</h1>
+                </h:form>
+            </f:facet>
+        </h:head>
+
+        <h:body>
+            <p:growl  id="mnsg" widgetVar="wmsj" showDetail="true"></p:growl>
+            <p:socket onMessage="handleMessage" channel="/admin">
+                <p:ajax event="message" update=":form:dat"></p:ajax>
+            </p:socket>
+            
+            <script type="text/javascript">
+                function handleMessage(facesmessage) {
+                    facesmessage.severity = 'info';
+                    PF('wmsj').show([facesmessage]);
+                }
+            </script>
+            
+            <f:view locale="#{inter.language}">
+            <h:form id="form">
+                <div align="right">
+                    <h:commandLink value="ESPAÑOL" action="#{inter.actionSpanish}"></h:commandLink>
+                    <h:outputLabel value=" o "></h:outputLabel>
+                    <h:commandLink value="INGLES" action="#{inter.actionEnglish}"></h:commandLink>
+                </div>
+                <p:dataTable id="dat" value="#{vista1.datos.persona}" var="dato" rows="3" >
+                
+                    <p:column headerText="#{msge.nombre}">
+                  
+                            <h:outputText value="#{dato.nombre}"></h:outputText>
+                 </p:column>
+                    <p:column headerText="#{msge.apellido}">
+                            <h:outputText value="#{dato.apellido}"></h:outputText>
+                </p:column>
+                    <p:column headerText="#{msge.correo}">
+                            <h:outputText value="#{dato.correo}"></h:outputText>
+                </p:column>
+                    <p:column headerText="#{msge.edad}">
+                            <h:outputText value="#{dato.edad}"></h:outputText>
+                </p:column>
+                    <p:column headerText="#{msge.ciudad}">
+                            <h:outputText value="#{dato.foto}"></h:outputText>
+                </p:column>
+                  
+            </p:dataTable>
+            </h:form>
+            </f:view>
+        </h:body>
+    </f:view>
+  
+</html>
+
+
+
+
+
+
+
+
+ 
